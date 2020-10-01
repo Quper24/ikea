@@ -4,14 +4,12 @@ const PARAM = {
     search: ['name', 'description', 'category', 'subcategory']
 };
 
-
 export const getData = {
     url: 'database/dataBase.json',
     get(process) {
         fetch(this.url)
             .then((response) => response.json())
             .then(process);
-        
     },
     wishList(list, callback) {
         this.get((data) => {
@@ -33,8 +31,6 @@ export const getData = {
         })
     },
     category(prop, value, callback) {
-        console.log(value);
-
         this.get((data) => {
             const result = data.filter(item =>
                 item[PARAM[prop]].toLowerCase() === value.toLowerCase())
@@ -56,16 +52,27 @@ export const getData = {
     },
     catalog(callback) {
         this.get((data) => {
-        // все тут
+            const result = data.reduce((arr, item) => {
+                if (!arr.includes(item.category)) {
+                    arr.push(item.category);
+                }                
+                return arr;
+            }, [])
         
             callback(result)
-        })
+        });
     },
     subCatalog(value, callback) {
         this.get((data) => {
-        // все тут
-
+            const result = data
+                .reduce((arr, item) => {
+                    if (!arr.includes(item.subcategory) && item.category === value) {
+                        arr.push(item.subcategory);
+                    }
+                    return arr;
+                }, []);
             callback(result)
-        })
+        });
     }
 };
+
