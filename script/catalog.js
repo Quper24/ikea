@@ -11,9 +11,9 @@ export const catalog = () => {
     const overlay = document.createElement('div');
 
     overlay.classList.add('overlay');
-    document.body.append(overlay);
+    document.body.insertAdjacentElement('afterbegin', overlay);
 
-    const openMenu = () => { 
+    const openMenu = () => {
         catalog.classList.add('open');
         overlay.classList.add('active');
     };
